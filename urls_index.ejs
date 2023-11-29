@@ -1,0 +1,18 @@
+<h3>My URLs</h3>
+<table>
+  <thead>
+    <tr>
+      <th>Short URL ID</th>
+      <th>Long URL</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% for (let id in urls) { %>
+      <tr>
+        <td><%= id %></td>
+        <td><%= urls[id] %></td>
+      </tr>
+    <% } %>
+  </tbody>
+</table>
+
