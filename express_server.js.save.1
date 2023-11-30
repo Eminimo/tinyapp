@@ -1,0 +1,92 @@
+Make sure that when rendering this template in your server code,Make sure that when rendering this template in your server code,const express = require("express");
+const app = express();
+const PORT = 8080;
+
+// Set EJS as the view engine
+app.set("view engine", "ejs");
+/ Assuming you have a form submission with a 'longURL' field in the request bo$
+  const longURL = req.body.longURL;/ Assuming you have a form submission with a 'longURL' field in the request bo$
+  const longURL = req.body.longURL;/ Assuming you have a form submission with a 'longURL' field in the request bo$
+  const longURL = req.body.longURL;
+// Dummy URL database for testing
+const urlDatabase = {
+  "b2xVn2": "http://www.lighthouselabs.ca",
+  "9sm5xK": "http://www.google.com"
+};
+
+// Middleware to parse request bodies
+app.use(express.urlencoded({ extended: true }));
+
+// Function to generate a random string (for short URLs)
+const generateRandomString = () => {
+  // Implementation of generateRandomString function
+};
+
+// POST route to remove a URL resource
+app.post("/urls/:id/delete", (req, res) => {
+  const urlId = req.params.id;
+  // Use the delete operator to remove the URL
+  delete urlDatabase[urlId];
+  // Redirect back to the urls_index page
+  res.redirect("/urls");
+});
+
+app.get("/", (req, res) => {
+  res.send("Hello!");
+});
+
+app.get("/urls.json", (req, res) => {
+  res.json(urlDatabase);
+});
+
+app.get("/urls", (req, res) => {
+  const templateVars = { urls: urlDatabase };
+  res.render("urls_index", templateVars);
+});
+
+app.get("/urls/new", (req, res) => {
+  res.render("urls_new");
+});
+
+app.post("/urls", (req, res) => {
+  // Assuming you have a form submission with a 'longURL' field in the request body
+  const longURL = req.body.longURL;
+  const shortURL = generateRandomString();
+
+  // Add the new URL to the database
+  urlDatabase[shortURL] = longURL;
+
+  // Redirect to the URLs index page or do whatever is appropriate
+  res.redirect("/urls");
+});
+
+app.get("/urls/:id", (req, res) => {
+  const id = req.params.id;
+  const longURL = urlDatabase[id];
+  const templateVars = { id, longURL };
+  res.render("urls_show", templateVars);
+});
+
+// Route to render the urls_show page for editing
+app.get("/urls/:id/edit", (req, res) => {
+  const id = req.params.id;
+  const longURL = urlDatabase[id];
+  const templateVars = { id, longURL };
+  res.render("urls_show", templateVars);
+});
+
+// POST route to update a URL resource
+app.post("/urls/:id/edit", (req, res) => {
+  const id = req.params.id;
+  const updatedLongURL = req.body.longURL;
+  // Update the longURL in the database
+  urlDatabase[id] = updatedLongURL;
+  // Redirect back to the urls_index page
+  res.redirect("/urls");
+});
+
+app.listen(PORT, () => {
+  console.log(`Example app listening on port ${PORT}!`);
+});
+
+
