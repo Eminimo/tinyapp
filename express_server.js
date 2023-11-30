@@ -13,48 +13,40 @@ app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-// Dummy URL database for testing
-const urlDatabase = {
-  "b2xVn2": "http://www.lighthouselabs.ca",
-  "9sm5xK": "http://www.google.com"
-};
-
-// Function to generate a random string (for short URLs)
-const generateRandomString = () => {
-  // Implementation of generateRandomString function
-};
-
 // Dummy username for testing
 const dummyUsername = "TestUser";
 
 // Modify existing routes to render templates properly
+app.get("/", (req, res) => {
+  // Redirect to the /urls page or any other desired page
+  res.redirect("/urls");
+});
+
 app.get("/urls", (req, res) => {
   const templateVars = {
     username: req.cookies.username || dummyUsername,
-    urls: urlDatabase
-    // ... any other vars
+    urls: {
+      "b2xVn2": "http://www.lighthouselabs.ca",
+      "9sm5xK": "http://www.google.com"
+      // Add more URLs here
+    }
   };
   res.render("urls_index", templateVars);
 });
 
-// POST route to remove a URL resource
-app.post("/urls/:id/delete", (req, res) => {
-  const urlId = req.params.id;
-  // Use the delete operator to remove the URL
-  delete urlDatabase[urlId];
-  // Redirect back to the urls_index page
+// POST route for handling login
+app.post("/login", (req, res) => {
+  const { username } = req.body;
+  // Set the username cookie
+  res.cookie("username", username);
+  // Redirect back to the /urls page
   res.redirect("/urls");
 });
 
-// ... (other routes)
-
-// POST route for handling login
-app.post("/login", (req, res) => {
-  const username = req.body.username;
-
-  // Set the cookie named 'username' with the value from the request body
-  res.cookie("username", username);
-
+// POST route for handling logout
+app.post("/logout", (req, res) => {
+  // Clear the username cookie
+  res.clearCookie("username");
   // Redirect back to the /urls page
   res.redirect("/urls");
 });
@@ -63,4 +55,3 @@ app.post("/login", (req, res) => {
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}!`);
 });
-
