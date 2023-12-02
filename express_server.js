@@ -51,6 +51,43 @@ app.post("/logout", (req, res) => {
   res.redirect("/urls");
 });
 
+app.get("/new", (req, res) => {
+  res.send("This is the new route!");
+});
+
+// POST route for handling the creation of a new URL
+app.post("/urls", (req, res) => {
+  const { longURL } = req.body;
+
+
+  // TODO: Logic to create a short URL, save it, etc.
+
+  // Redirect to the /urls page or a specific page showing the new URL
+  res.redirect("/urls");
+});
+ 
+const urlDatabase = {
+  "b2xVn2": "http://www.lighthouselabs.ca",
+  "9sm5xK": "http://www.google.com",
+  // Add more URLs here
+};
+
+// ...
+
+// Add this route to handle shortURL requests
+app.get("/u/:id", (req, res) => {
+  const shortURL = req.params.id;
+  const longURL = urlDatabase[shortURL];
+
+  if (longURL) {
+    res.redirect(longURL);
+  } else {
+    // Handle the case when the shortURL is not found
+    res.status(404).send("URL not found");
+  }
+});
+
+
 // Start the server
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}!`);

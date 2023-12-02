@@ -1,6 +1,21 @@
 <!-- views/urls_index.ejs -->
 
 <h3>My URLs</h3>
+
+<% if (!username) { %>
+  <!-- Display login form if not logged in -->
+  <form method="POST" action="/login">
+    <input type="text" name="username" placeholder="Username" />
+    <button type="submit" class="btn btn-primary">Login</button>
+  </form>
+<% } else { %>
+  <!-- Display username and logout form if logged in -->
+  <p class="nav-item nav-link">Logged in as: <%= username %>!</p>
+  <form method="POST" action="/logout">
+    <button type="submit" class="btn btn-danger">Logout</button>
+  </form>
+<% } %>
+
 <table>
   <thead>
     <tr>
